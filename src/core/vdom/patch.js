@@ -32,6 +32,7 @@ export const emptyNode = new VNode('', {}, [])
 
 const hooks = ['create', 'activate', 'update', 'remove', 'destroy']
 
+// 是否值得比较
 function sameVnode (a, b) {
   return (
     a.key === b.key && (
@@ -104,6 +105,7 @@ export function createPatchFunction (backend) {
     }
   }
 
+  // 检测是否非法tag名
   function isUnknownElement (vnode, inVPre) {
     return (
       !inVPre &&
@@ -131,6 +133,7 @@ export function createPatchFunction (backend) {
     ownerArray,
     index
   ) {
+    // ownerArray 为vnode形式的数组
     if (isDef(vnode.elm) && isDef(ownerArray)) {
       // This vnode was used in a previous render!
       // now it's used as a new node, overwriting its elm would cause
@@ -188,10 +191,12 @@ export function createPatchFunction (backend) {
           insert(parentElm, vnode.elm, refElm)
         }
       } else {
+        // 创建vnode children的子DOM
         createChildren(vnode, children, insertedVnodeQueue)
         if (isDef(data)) {
           invokeCreateHooks(vnode, insertedVnodeQueue)
         }
+        // 操作DOM
         insert(parentElm, vnode.elm, refElm)
       }
 
@@ -211,6 +216,7 @@ export function createPatchFunction (backend) {
     let i = vnode.data
     if (isDef(i)) {
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive
+      // 调用vnode.data.hook.init(vnode, false)
       if (isDef(i = i.hook) && isDef(i = i.init)) {
         i(vnode, false /* hydrating */)
       }
@@ -220,6 +226,7 @@ export function createPatchFunction (backend) {
       // in that case we can just return the element and be done.
       if (isDef(vnode.componentInstance)) {
         initComponent(vnode, insertedVnodeQueue)
+        // 真正的DOM操作在这里
         insert(parentElm, vnode.elm, refElm)
         if (isTrue(isReactivated)) {
           reactivateComponent(vnode, insertedVnodeQueue, parentElm, refElm)
@@ -308,6 +315,7 @@ export function createPatchFunction (backend) {
     i = vnode.data.hook // Reuse variable
     if (isDef(i)) {
       if (isDef(i.create)) i.create(emptyNode, vnode)
+      // 这里对 insertedVnodeQueue 进行操作
       if (isDef(i.insert)) insertedVnodeQueue.push(vnode)
     }
   }
@@ -422,6 +430,7 @@ export function createPatchFunction (backend) {
     }
 
     while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+      // 除去空的
       if (isUndef(oldStartVnode)) {
         oldStartVnode = oldCh[++oldStartIdx] // Vnode has been moved left
       } else if (isUndef(oldEndVnode)) {
@@ -506,6 +515,7 @@ export function createPatchFunction (backend) {
     index,
     removeOnly
   ) {
+    // 情况1. 引用一致，没有变化
     if (oldVnode === vnode) {
       return
     }
@@ -553,19 +563,24 @@ export function createPatchFunction (backend) {
     }
     if (isUndef(vnode.text)) {
       if (isDef(oldCh) && isDef(ch)) {
+        // 情况 两个节点都有子节点，而且它们不一样
         if (oldCh !== ch) updateChildren(elm, oldCh, ch, insertedVnodeQueue, removeOnly)
       } else if (isDef(ch)) {
+        // 新的有子节点
         if (process.env.NODE_ENV !== 'production') {
           checkDuplicateKeys(ch)
         }
         if (isDef(oldVnode.text)) nodeOps.setTextContent(elm, '')
         addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue)
       } else if (isDef(oldCh)) {
+        // 旧的有子节点而新的没有子节点
         removeVnodes(elm, oldCh, 0, oldCh.length - 1)
       } else if (isDef(oldVnode.text)) {
+        // 新旧都没有子节点，且老姐点有文字内容
         nodeOps.setTextContent(elm, '')
       }
     } else if (oldVnode.text !== vnode.text) {
+      // 新节点为文字节点
       nodeOps.setTextContent(elm, vnode.text)
     }
     if (isDef(data)) {
