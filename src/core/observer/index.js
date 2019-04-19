@@ -121,6 +121,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
     Object.isExtensible(value) &&
     !value._isVue
   ) {
+    // 这里是最基本最重要的操作
     ob = new Observer(value)
   }
   if (asRootData && ob) {
@@ -154,6 +155,7 @@ export function defineReactive (
   }
 
   let childOb = !shallow && observe(val)
+  // 最基本操作
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,

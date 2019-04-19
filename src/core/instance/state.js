@@ -103,6 +103,7 @@ function initProps (vm: Component, propsOptions: Object) {
     // during Vue.extend(). We only need to proxy props defined at
     // instantiation here.
     if (!(key in vm)) {
+      // 代理_props
       proxy(vm, `_props`, key)
     }
   }
@@ -144,10 +145,12 @@ function initData (vm: Component) {
         vm
       )
     } else if (!isReserved(key)) {
+      // 代理_data
       proxy(vm, `_data`, key)
     }
   }
   // observe data
+  // 开始将属性转化为响应式
   observe(data, true /* asRootData */)
 }
 
