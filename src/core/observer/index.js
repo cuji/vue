@@ -227,6 +227,7 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     target[key] = val
     return val
   }
+  // 这个方法的实质
   defineReactive(ob.value, key, val)
   ob.dep.notify()
   return val
@@ -256,6 +257,7 @@ export function del (target: Array<any> | Object, key: any) {
   if (!hasOwn(target, key)) {
     return
   }
+  // 这个方法的实质
   delete target[key]
   if (!ob) {
     return

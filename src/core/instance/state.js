@@ -356,6 +356,7 @@ export function stateMixin (Vue: Class<Component>) {
     }
     options = options || {}
     options.user = true
+    // 实质内容
     const watcher = new Watcher(vm, expOrFn, cb, options)
     if (options.immediate) {
       try {
