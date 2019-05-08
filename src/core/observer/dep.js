@@ -21,6 +21,7 @@ export default class Dep {
   }
 
   addSub (sub: Watcher) {
+    // 记录所有依赖这个属性的组件
     this.subs.push(sub)
   }
 
@@ -44,6 +45,7 @@ export default class Dep {
       subs.sort((a, b) => a.id - b.id)
     }
     for (let i = 0, l = subs.length; i < l; i++) {
+      // 调用watcher.update()方法，
       subs[i].update()
     }
   }

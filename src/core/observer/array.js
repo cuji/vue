@@ -8,6 +8,7 @@ import { def } from '../util/index'
 const arrayProto = Array.prototype
 export const arrayMethods = Object.create(arrayProto)
 
+// 对数组的这些方法进行劫持，使用这些方法时 this.__ob__.dep.notify()通知
 const methodsToPatch = [
   'push',
   'pop',
@@ -21,6 +22,7 @@ const methodsToPatch = [
 /**
  * Intercept mutating methods and emit events
  */
+// 对于push, unshift, splice 新增进来的数组元素，也进行observe
 methodsToPatch.forEach(function (method) {
   // cache original method
   const original = arrayProto[method]

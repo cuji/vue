@@ -26,6 +26,7 @@ import {
  * how to merge a parent option value and a child option
  * value into the final value.
  */
+// 这里都是合并策略的，初始值为一个空的对象
 const strats = config.optionMergeStrategies
 
 /**

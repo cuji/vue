@@ -47,7 +47,7 @@ export default class Watcher {
     expOrFn: string | Function,
     cb: Function,
     options?: ?Object,
-    isRenderWatcher?: boolean
+    isRenderWatcher?: boolean // 标识是否组件初始化使用的watcher
   ) {
     this.vm = vm
     if (isRenderWatcher) {
@@ -99,10 +99,12 @@ export default class Watcher {
    * Evaluate the getter, and re-collect dependencies.
    */
   get () {
+    // 设置 Dep.target = this;
     pushTarget(this)
     let value
     const vm = this.vm
     try {
+      // 调用了渲染函数
       value = this.getter.call(vm, vm)
     } catch (e) {
       if (this.user) {

@@ -8,15 +8,30 @@
   </head>
   <body>
     <div id="app">
-      {{ message }}
+      <span>{{ test }}</span>
     </div>
     <script src="./vue.js"></script>
     <script>
       var app = new Vue({
         el: '#app',
-        data: {
-          message: 'Hello Vue!',
+        data() {
+          return {
+            test: 'good',
+          };
         },
+        // props: {
+        //   a: {
+        //     type: Object,
+        //     default() {
+        //       return {
+        //         key1: 'a',
+        //         key2: {
+        //           a: 'b',
+        //         },
+        //       };
+        //     },
+        //   },
+        // },
       });
     </script>
   </body>
