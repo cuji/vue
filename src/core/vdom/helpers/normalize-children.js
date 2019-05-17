@@ -18,6 +18,10 @@ import { isFalse, isTrue, isDef, isUndef, isPrimitive } from 'shared/util'
 export function simpleNormalizeChildren (children: any) {
   for (let i = 0; i < children.length; i++) {
     if (Array.isArray(children[i])) {
+      // 这个方法有点吊嘛，可以抚平一层
+      // var array1 = [2, 32, ['a', 'b', 'c']];
+      // console.log(Array.prototype.concat.apply([],array1));
+      // ==> [2, 32, "a", "b", "c"]
       return Array.prototype.concat.apply([], children)
     }
   }

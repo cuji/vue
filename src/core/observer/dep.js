@@ -31,6 +31,7 @@ export default class Dep {
 
   depend () {
     if (Dep.target) {
+      // 这里的本质操作是this.addSub(Dep.target)
       Dep.target.addDep(this)
     }
   }

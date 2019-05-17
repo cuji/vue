@@ -729,6 +729,7 @@
 
   Dep.prototype.depend = function depend () {
     if (Dep.target) {
+      // 这里的本质操作是this.addSub(Dep.target)
       Dep.target.addDep(this);
     }
   };
@@ -2360,6 +2361,10 @@
   function simpleNormalizeChildren (children) {
     for (var i = 0; i < children.length; i++) {
       if (Array.isArray(children[i])) {
+        // 这个方法有点吊嘛，可以抚平一层
+        // var array1 = [2, 32, ['a', 'b', 'c']];
+        // console.log(Array.prototype.concat.apply([],array1));
+        // ==> [2, 32, "a", "b", "c"]
         return Array.prototype.concat.apply([], children)
       }
     }
@@ -3131,6 +3136,7 @@
           vnode,
           activeInstance
         );
+        // 挂载子组件
         child.$mount(hydrating ? vnode.elm : undefined, hydrating);
       }
     },
@@ -3296,6 +3302,7 @@
       options.render = inlineTemplate.render;
       options.staticRenderFns = inlineTemplate.staticRenderFns;
     }
+    // 
     return new vnode.componentOptions.Ctor(options)
   }
 
@@ -6483,6 +6490,7 @@
     }
 
     return function patch (oldVnode, vnode, hydrating, removeOnly) {
+      // destroy时
       if (isUndef(vnode)) {
         if (isDef(oldVnode)) { invokeDestroyHook(oldVnode); }
         return
